@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    DATABASE_URL="postgresql+asyncpg://aryan:1234@localhost:5432/interview_db"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:Aryan123@localhost:5433/ai_interview_db"
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o"
 
