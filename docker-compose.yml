@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_interview_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/ai_interview_db
+      - SECRET_KEY=azbcxdwevfugthsirjqkplomnabcxyz
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ALLOWED_ORIGINS=["http://localhost:3000","http://localhost:5173"]
+      - OPENAI_MODEL=gpt-4o
+      - AWS_ACCESS_KEY_ID=skip
+      - AWS_SECRET_ACCESS_KEY=skip
+      - AWS_REGION=us-east-1
+      - S3_BUCKET_NAME=skip
+      - FRONTEND_URL=http://localhost:3000
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
